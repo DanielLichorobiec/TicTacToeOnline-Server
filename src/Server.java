@@ -74,30 +74,23 @@ public class Server extends Thread {
                 printer.printTable(game);
 
 
-
-
                 while (!game.isDone()) {
                     if (playedId == 2) {
-                        //System.out.println(game.parseBoardToString()+"a0\n");
-                        //out.writeBytes(game.parseBoardToString() + "\n");
 
                         while (true) {
                             chosenField = in.read();
 
                             if (!game.makeMove(chosenField, playedId)) {
-                                System.out.println(game.parseBoardToString()+"a1\n");
-                                out.writeBytes(game.parseBoardToString() + "\n");
+                                out.writeBytes("INVALID " +game.parseBoardToString()+ "\n");
                             } else {
-                                System.out.println(game.parseBoardToString()+"a2\n");
+                                if (game.isDone()) {
+                                    out.writeBytes(String.valueOf(game.getWinner().getNumOfPlayer()));
+                                    break;
+                                }
                                 out.writeBytes(game.parseBoardToString() + "\n");
                                 break;
                             }
                         }
-                        ////////
-//                        while (!game.makeMove(chosenField, playedId)) {
-//                            out.writeBytes(game.parseBoardToString());
-//                            chosenField = in.read();
-//                        }
                     } else {
 
                         printer.printMessageToPlayerOnConsole(playedId);
@@ -108,39 +101,21 @@ public class Server extends Thread {
                             if (!game.makeMove(chosenField, playedId)) {
                                 printer.printMessageToPlayerOnConsole(playedId);
                             } else {
-                                System.out.println(game.parseBoardToString() + "a3\n");
+                                if (game.isDone()) {
+                                    out.writeBytes(String.valueOf(game.getWinner().getNumOfPlayer()));
+                                    break;
+                                }
                                 out.writeBytes(game.parseBoardToString() + "\n");
                                 break;
                             }
                         }
                     }
 
-//                        printer.printMessageToPlayerOnConsole(playedId);
-//                        chosenField = scanner.nextInt();
-//                        out.writeBytes(game.parseBoardToString());
-//                        chosenField = in.read();
-
-
-                    ////////////////
-//                    while (!game.makeMove(chosenField, playedId)) {
-//                        if (playedId == 1) {
-//                            printer.printMessageToPlayerOnConsole(playedId);
-//                            chosenField = scanner.nextInt();
-//                        } else {
-//                            out.writeBytes(game.parseBoardToString());
-//                            chosenField = in.read();
-//                        }
-//                    }
-
-                    //out.writeBytes(game.parseBoardToString() + "\n");
                     printer.printTable(game);
                     switchPlayer(playedId);
 
                 }
                 System.out.println("End of game!");
-                String tmp = String.valueOf(game.getWinner().getNumOfPlayer());
-                System.out.println(tmp);
-                out.writeBytes(tmp);
                 printer.printInfo(game);
 
 
